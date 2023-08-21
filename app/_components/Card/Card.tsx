@@ -7,16 +7,17 @@ import {
   StyledTitle,
   StyledTitleSection,
 } from './Card.styles'
-import { ICardProps } from './types'
+import type { ICardProps } from './types'
 
 export const Card = ({
   title,
   subtitle,
   titleSection,
+  columnSpan,
   children,
 }: ICardProps) => {
   return (
-    <StyledContainer>
+    <StyledContainer columnSpan={columnSpan}>
       <StyledTitle>{title}</StyledTitle>
       <StyledSubtitle>{subtitle}</StyledSubtitle>
       <StyledTitleSection>{titleSection}</StyledTitleSection>
