@@ -1,33 +1,35 @@
-import { Button, Card, Container } from './_components'
+import { Button, Card, Container, PeriodFilter } from './_components'
 
 export default function Home() {
   return (
-    <Container
-      columns="1fr 1fr"
-      rows="auto repeat(4, 1fr)"
-      title="Summer Referral Competition"
-    >
-      <Card title="100,000" subtitle="Participants" columnSpan="1/-1">
+    <Container title="Summer Referral Competition" gridColumns={2} gridRows={4}>
+      <PeriodFilter />
+
+      <Card title="100,000" subtitle="Participants" columnSpan={2}>
         {' '}
       </Card>
-      <Card title="100,000" subtitle="Participants" columnSpan="1/-1">
+      <Card
+        title="ZooTools insights"
+        subtitle="Making analytics simple and actionable"
+        columnSpan={2}
+      >
         {' '}
       </Card>
-      <Card title="100,000" subtitle="Participants">
+      <Card titleSection="User leaderboard">
         {' '}
         <Button text="See leaderboard" />
       </Card>
-      <Card title="100,000" subtitle="Participants">
+      <Card titleSection="Traffic">
         {' '}
-        <Button text="See leaderboard" />
+        <Button text="See traffic sources" />
       </Card>
-      <Card title="100,000" subtitle="Participants">
+      <Card titleSection="Signup location">
         {' '}
-        <Button text="See leaderboard" />
+        <Button text="See all countries" />
       </Card>
-      <Card title="100,000" subtitle="Participants">
+      <Card titleSection="Behaviour">
         {' '}
-        <Button text="See leaderboard" />
+        <Button text="See all countries" />
       </Card>
     </Container>
   )

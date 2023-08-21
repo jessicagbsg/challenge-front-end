@@ -4,13 +4,13 @@ import { StyledContainer, StyledTitle } from './Container.styles'
 import type { IContainerProps } from './types'
 
 export const Container = ({
-  columns,
-  rows,
+  gridColumns,
+  gridRows,
   title,
   children,
 }: IContainerProps) => {
   return (
-    <StyledContainer columns={columns} rows={rows}>
+    <StyledContainer gridColumns={gridColumns} gridRows={gridRows}>
       <StyledTitle>{title}</StyledTitle>
       {children}
     </StyledContainer>

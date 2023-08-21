@@ -2,8 +2,8 @@ export interface ICardProps {
   title?: string
   subtitle?: string
   titleSection?: string
-  columns?: string
-  rows?: string
-  columnSpan?: string
+  gridColumns?: number
+  gridRows?: number
+  columnSpan?: number
   children: React.ReactNode
 }

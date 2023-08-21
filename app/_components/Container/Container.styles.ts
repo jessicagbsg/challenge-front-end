@@ -7,8 +7,8 @@ export const StyledContainer = styled.main<IContainerProps>`
   padding: 2rem 0;
   display: grid;
   gap: 2rem;
-  grid-template-columns: ${({ columns }) => columns};
-  grid-template-rows: ${({ rows }) => rows};
+  grid-template-columns: repeat(${({ gridColumns }) => gridColumns}, 1fr);
+  grid-template-rows: auto repeat(${({ gridRows }) => gridRows}, 1fr);
 `
 export const StyledTitle = styled.h1`
   font-size: 1.2rem;
