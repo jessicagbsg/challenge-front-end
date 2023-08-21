@@ -1,7 +1,12 @@
+import { Card } from './_components/Card'
+
 export default function Home() {
   return (
     <main>
-      <h2>hfuhfh</h2>
+      <Card title="100,000" subtitle="Participants">
+        {' '}
+        grafico vai aqui
+      </Card>
     </main>
   )
 }
