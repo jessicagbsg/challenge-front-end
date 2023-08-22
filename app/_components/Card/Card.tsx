@@ -16,6 +16,7 @@ export const Card = ({
   columnSpan = 1,
   gridRows = 1,
   gridColumns = 1,
+  cardFilter,
   children,
 }: ICardProps) => {
   return (
@@ -27,6 +28,7 @@ export const Card = ({
       <StyledTitle>{title}</StyledTitle>
       <StyledSubtitle>{subtitle}</StyledSubtitle>
       <StyledTitleSection>{titleSection}</StyledTitleSection>
+      {cardFilter}
       <StyledContent>{children}</StyledContent>
     </StyledContainer>
   )

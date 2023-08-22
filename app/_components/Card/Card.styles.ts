@@ -7,9 +7,10 @@ export const StyledContainer = styled.div<ICardProps>`
   grid-template-rows: auto repeat(${({ gridRows }) => gridRows}, 1fr);
   grid-column: span ${({ columnSpan }) => columnSpan};
   background-color: var(--white);
-  padding: 2rem;
+  padding: 1rem 2rem;
   border-radius: 8px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
 `
 
 export const StyledTitle = styled.h2`

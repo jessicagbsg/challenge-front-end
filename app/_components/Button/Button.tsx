@@ -1,7 +1,5 @@
 'use client'
 
-import { useState } from 'react'
-
 import { StyledButton } from './Button.styles'
 import type { IButtonProps } from './types'
 
