@@ -5,6 +5,9 @@ export interface ICardProps {
   gridColumns?: number
   gridRows?: number
   columnSpan?: number
+  contentGridColumns?: number
+  contentGridRows?: number
+  contentColumnSpan?: number
   cardFilter?: React.ReactNode
   children: React.ReactNode
 }

@@ -4,7 +4,7 @@ import type { ICardProps } from './types'
 export const StyledContainer = styled.div<ICardProps>`
   display: grid;
   grid-template-columns: repeat(${({ gridColumns }) => gridColumns}, 1fr);
-  grid-template-rows: auto repeat(${({ gridRows }) => gridRows}, 1fr);
+  grid-template-rows: repeat(${({ gridRows }) => gridRows}, auto);
   grid-column: span ${({ columnSpan }) => columnSpan};
   background-color: var(--white);
   padding: 1rem 2rem;
@@ -31,7 +31,11 @@ export const StyledTitleSection = styled.h4`
 
 export const StyledContent = styled.div<ICardProps>`
   display: grid;
-  grid-template-columns: repeat(${({ gridColumns }) => gridColumns}, 1fr);
-  grid-template-rows: auto repeat(${({ gridRows }) => gridRows}, 1fr);
-  margin-top: 1rem;
+  grid-template-columns: repeat(
+    ${({ contentGridColumns }) => contentGridColumns},
+    auto
+  );
+  grid-template-rows: repeat(${({ contentGridRows }) => contentGridRows}, auto);
+  grid-column: span ${({ contentColumnSpan }) => contentColumnSpan};
+  gap: 1rem;
 `

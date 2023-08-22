@@ -13,9 +13,12 @@ export const Card = ({
   title,
   subtitle,
   titleSection,
-  columnSpan = 1,
   gridRows = 1,
   gridColumns = 1,
+  columnSpan = 1,
+  contentGridRows = 1,
+  contentGridColumns = 1,
+  contentColumnSpan = 1,
   cardFilter,
   children,
 }: ICardProps) => {
@@ -29,7 +32,13 @@ export const Card = ({
       <StyledSubtitle>{subtitle}</StyledSubtitle>
       <StyledTitleSection>{titleSection}</StyledTitleSection>
       {cardFilter}
-      <StyledContent>{children}</StyledContent>
+      <StyledContent
+        contentColumnSpan={contentColumnSpan}
+        contentGridRows={contentGridRows}
+        contentGridColumns={contentGridColumns}
+      >
+        {children}
+      </StyledContent>
     </StyledContainer>
   )
 }
