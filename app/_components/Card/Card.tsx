@@ -13,11 +13,17 @@ export const Card = ({
   title,
   subtitle,
   titleSection,
-  columnSpan,
+  columnSpan = 1,
+  gridRows = 1,
+  gridColumns = 1,
   children,
 }: ICardProps) => {
   return (
-    <StyledContainer columnSpan={columnSpan}>
+    <StyledContainer
+      columnSpan={columnSpan}
+      gridColumns={gridColumns}
+      gridRows={gridRows}
+    >
       <StyledTitle>{title}</StyledTitle>
       <StyledSubtitle>{subtitle}</StyledSubtitle>
       <StyledTitleSection>{titleSection}</StyledTitleSection>

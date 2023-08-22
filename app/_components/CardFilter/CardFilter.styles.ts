@@ -1,12 +1,11 @@
 import styled from 'styled-components'
 
-export const StyledPeriodFilter = styled.nav`
+export const StyledCardFilter = styled.div`
   display: flex;
-  background-color: var(--white);
   padding: 0.5rem;
   border-radius: 8px;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
   width: min-content;
-  gap: 0.5rem;
+  gap: 0.2rem;
   margin-left: auto;
+  grid-row: 1;
 `

@@ -1,4 +1,6 @@
 export interface IButtonProps {
-  text: string
+  text?: string
   onClick?: () => void
+  isPressed?: boolean
+  onPress?: () => void
 }

@@ -1,4 +1,10 @@
-import { Button, Card, Container, PeriodFilter } from './_components'
+import {
+  Button,
+  Card,
+  CardFilter,
+  Container,
+  PeriodFilter,
+} from './_components'
 
 export default function Home() {
   return (
@@ -15,20 +21,19 @@ export default function Home() {
       >
         {' '}
       </Card>
-      <Card titleSection="User leaderboard">
-        {' '}
+      <Card titleSection="User leaderboard" gridColumns={1} gridRows={2}>
         <Button text="See leaderboard" />
       </Card>
-      <Card titleSection="Traffic">
-        {' '}
+      <Card titleSection="Traffic" gridColumns={1} gridRows={2}>
+        <CardFilter text1="Source" text2="City" />{' '}
         <Button text="See traffic sources" />
       </Card>
-      <Card titleSection="Signup location">
-        {' '}
+      <Card titleSection="Signup location" gridColumns={1} gridRows={2}>
+        <CardFilter text1="Country" text2="City" />{' '}
         <Button text="See all countries" />
       </Card>
-      <Card titleSection="Behaviour">
-        {' '}
+      <Card titleSection="Behaviour" gridColumns={1} gridRows={2}>
+        <CardFilter text1="Browsers" text2="Decides" />
         <Button text="See all countries" />
       </Card>
     </Container>
