@@ -23,6 +23,7 @@ export const StyledContainer = styled.main<IContainerProps>`
 export const StyledTitle = styled.h1`
   font-size: 1.2rem;
   font-weight: 500;
+  align-self: center;
   @media (max-width: 500px) {
     margin: 0 auto;
   }

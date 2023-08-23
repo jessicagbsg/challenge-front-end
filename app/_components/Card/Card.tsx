@@ -5,8 +5,12 @@ import {
   StyledContent,
   StyledSubtitle,
   StyledTitle,
+  StyledTitleContiner,
   StyledTitleSection,
 } from './Card.styles'
+
+import Image from 'next/image'
+
 import type { ICardProps } from './types'
 
 export const Card = ({
@@ -28,7 +32,18 @@ export const Card = ({
       gridColumns={gridColumns}
       gridRows={gridRows}
     >
-      <StyledTitle>{title}</StyledTitle>
+      <StyledTitleContiner>
+        <StyledTitle>{title}</StyledTitle>
+        {title === '100,000' ? (
+          <Image
+            src="/images/people.svg"
+            height={24}
+            width={24}
+            alt="People icon"
+          />
+        ) : null}
+      </StyledTitleContiner>
+
       <StyledSubtitle>{subtitle}</StyledSubtitle>
       <StyledTitleSection>{titleSection}</StyledTitleSection>
       {cardFilter}

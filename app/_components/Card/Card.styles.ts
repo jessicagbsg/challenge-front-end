@@ -16,9 +16,16 @@ export const StyledContainer = styled.div<ICardProps>`
   }
 `
 
+export const StyledTitleContiner = styled.div<ICardProps>`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+`
+
 export const StyledTitle = styled.h2`
   font-size: 2rem;
   font-weight: 700;
+  margin-right: 0.6rem;
 `
 
 export const StyledSubtitle = styled.h3`
