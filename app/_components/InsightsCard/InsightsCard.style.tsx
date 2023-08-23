@@ -6,16 +6,22 @@ export const StyledTextContainer = styled.div`
   flex-direction: column;
   height: 100%;
   padding-top: 1rem;
+  @media (max-width: 900px) {
+    grid-column: span 2;
+  }
 `
 
 export const StyledTitle = styled.h3`
-  font-size: 16px;
+  font-size: 1.1rem;
   font-weight: 600;
   margin: 0;
   margin-bottom: 0.5rem;
+  @media (max-width: 500px) {
+    font-size: 1rem;
+  }
 `
 
-export const StyledText = styled.p`
+export const StyledText = styled.div`
   display: flex;
   align-items: center;
   font-size: 0.9rem;
@@ -29,6 +35,16 @@ export const StyledText = styled.p`
     color: var(--primary);
     cursor: pointer;
   }
+
+  @media (max-width: 1200px) {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 0.65rem;
+    margin-top: 0.5rem;
+    line-height: 2;
+  }
 `
 
 export const StyledImageContainer = styled.div<StyledImageContainerProps>`
@@ -40,4 +56,8 @@ export const StyledImageContainer = styled.div<StyledImageContainerProps>`
   background-color: ${({ backgroundColor }) => backgroundColor};
   border-radius: 8px;
   margin-right: 0.5rem;
+  @media (max-width: 500px) {
+    height: 1.8rem;
+    width: 1.8rem;
+  }
 `

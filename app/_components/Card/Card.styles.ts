@@ -26,11 +26,17 @@ export const StyledTitle = styled.h2`
   font-size: 2rem;
   font-weight: 700;
   margin-right: 0.6rem;
+  @media (max-width: 500px) {
+    font-size: 1.5rem;
+  }
 `
 
 export const StyledSubtitle = styled.h3`
   font-size: 1.1rem;
   font-weight: 500;
+  @media (max-width: 500px) {
+    font-size: 0.9rem;
+  }
 `
 
 export const StyledTitleSection = styled.h4`

@@ -35,4 +35,7 @@ export const StyledText = styled.p`
   @media (min-width: 1700px) {
     font-size: 1rem;
   }
+  @media (max-width: 500px) {
+    font-size: 0.7rem;
+  }
 `
