@@ -7,15 +7,16 @@ import { HorizontalChart } from '../HorizontalChart'
 
 export const SignupCard = () => {
   const arr2 = [
-    { x: 'United States', y: 40 },
-    { x: 'Germany', y: 43 },
-    { x: 'Netherlands', y: 50 },
-    { x: 'India', y: 33 },
-    { x: 'Japan', y: 21 },
-    { x: 'Other', y: 11 },
+    { x: 'United States', y: 40, code: 'US' },
+    { x: 'Germany', y: 43, code: 'DE' },
+    { x: 'Netherlands', y: 50, code: 'NL' },
+    { x: 'India', y: 33, code: 'IN' },
+    { x: 'Japan', y: 21, code: 'JP' },
+    { x: 'Other', y: 11, code: 'other' },
   ]
     .sort((a, b) => b.y - a.y)
     .reverse()
+
   return (
     <Card
       titleSection="Signup location"

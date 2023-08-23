@@ -7,12 +7,12 @@ import { HorizontalChart } from '../HorizontalChart'
 
 export const BehaviourCard = () => {
   const arr3 = [
-    { x: 'United States', y: 60 },
-    { x: 'Germany', y: 43 },
-    { x: 'Netherlands', y: 23 },
-    { x: 'India', y: 46 },
-    { x: 'Japan', y: 12 },
-    { x: 'Other', y: 6 },
+    { x: 'United States', y: 60, code: 'US' },
+    { x: 'Germany', y: 43, code: 'DE' },
+    { x: 'Netherlands', y: 23, code: 'NL' },
+    { x: 'India', y: 46, code: 'IN' },
+    { x: 'Japan', y: 12, code: 'JP' },
+    { x: 'Other', y: 6, code: 'other' },
   ]
     .sort((a, b) => b.y - a.y)
     .reverse()

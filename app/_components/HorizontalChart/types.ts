@@ -5,4 +5,5 @@ export interface IHorizontalChartProps {
 export interface IHorizontalChartData {
   x: string
   y: number
+  code?: string
 }

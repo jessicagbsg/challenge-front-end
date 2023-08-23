@@ -5,6 +5,20 @@ import { VictoryChart, VictoryBar, VictoryAxis, VictoryLabel } from 'victory'
 import type { IHorizontalChartProps } from './types'
 
 export const HorizontalChart = ({ data }: IHorizontalChartProps) => {
+  const getFlagEmoji = (countryCode: string) => {
+    if (countryCode === 'other') {
+      return '🌍'
+    }
+    return String.fromCodePoint(
+      ...[...countryCode.toUpperCase()].map((x) => 0x1f1a5 + x.charCodeAt(0)),
+    )
+  }
+
+  data = data.map((item) => ({
+    ...item,
+    x: item.code ? `${getFlagEmoji(item.code)} ${item.x}` : item.x,
+  }))
+
   return (
     <VictoryChart
       domainPadding={{ x: 0 }}
