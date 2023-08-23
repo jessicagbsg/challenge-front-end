@@ -1,6 +1,11 @@
 'use client'
 
 import { Card } from '../Card'
+import {
+  StyledText,
+  StyledTextContainer,
+  StyledTitle,
+} from './InsightsCard.style'
 
 export const InsightsCard = () => {
   return (
@@ -14,12 +19,26 @@ export const InsightsCard = () => {
       contentGridColumns={2}
       contentGridRows={2}
     >
-      <div>
-        <p>Summary</p>
-      </div>
-      <div>
-        <p>Recommendations</p>
-      </div>
+      <StyledTextContainer>
+        <StyledTitle>Summary</StyledTitle>
+        <StyledText>
+          Signups are slowing down. -5% new than last week.
+        </StyledText>
+        <StyledText>
+          80% of your signups were invited by other members.
+        </StyledText>
+        <StyledText>80% of your signups were invited by a friend.</StyledText>
+        <StyledText>80% of your signups were invited by a friend.</StyledText>
+      </StyledTextContainer>
+      <StyledTextContainer>
+        <StyledTitle>Recommendations</StyledTitle>
+        <StyledText>
+          Make sure to promote and <a href="/">share your form</a>
+        </StyledText>
+        <StyledText>
+          Congrats! This is huge. Keep giving rewards for your users
+        </StyledText>
+      </StyledTextContainer>
     </Card>
   )
 }

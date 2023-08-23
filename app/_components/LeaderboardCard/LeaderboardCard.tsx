@@ -39,7 +39,7 @@ export const LeaderboardCard = () => {
         <StyledText>Email</StyledText>
         <StyledText>Friends Invited</StyledText>
         <StyledText>Country</StyledText>
-        {usersLeaderboard.map((user, index) => (
+        {usersLeaderboard.map((user) => (
           <>
             <StyledText>{user.email}</StyledText>
             <StyledText>{user.friendsInvited}</StyledText>
