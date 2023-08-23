@@ -50,7 +50,7 @@ export const HorizontalChart = ({ data }: IHorizontalChartProps) => {
           y={index * 20 + 10}
           text={`${item.y}`}
           style={{
-            fontSize: 10,
+            fontSize: 8,
             fill: '#333',
           }}
         />

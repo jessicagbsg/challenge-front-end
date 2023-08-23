@@ -13,6 +13,7 @@ export const StyledButton = styled.button<IButtonProps>`
   font-weight: 500;
   cursor: pointer;
   width: fit-content;
+  align-self: end;
   &:hover {
     background-color: var(--button-primary-hover);
   }

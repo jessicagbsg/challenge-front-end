@@ -9,4 +9,7 @@ export const StyledPeriodFilter = styled.nav`
   width: min-content;
   gap: 0.5rem;
   margin-left: auto;
+  @media (max-width: 500px) {
+    margin: 0 auto;
+  }
 `

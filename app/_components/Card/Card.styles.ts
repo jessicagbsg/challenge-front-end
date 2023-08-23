@@ -11,6 +11,9 @@ export const StyledContainer = styled.div<ICardProps>`
   border-radius: 8px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
   align-items: center;
+  @media (max-width: 800px) {
+    grid-column: span 2;
+  }
 `
 
 export const StyledTitle = styled.h2`
