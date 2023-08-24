@@ -34,7 +34,7 @@ export const Card = ({
     >
       <StyledTitleContiner>
         <StyledTitle>{title}</StyledTitle>
-        {title === '100,000' ? (
+        {subtitle === 'Participants' ? (
           <Image
             src="/images/people.svg"
             height={24}

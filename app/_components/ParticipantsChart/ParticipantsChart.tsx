@@ -1,22 +1,59 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { VictoryChart, VictoryBar, VictoryTooltip, VictoryAxis } from 'victory'
+
+import { generateFakeParticipants } from 'app/_utils/generateFakeParticipants'
 import { Card } from '../Card'
+import { IParticipantsData, IUsersPerPeriod } from './types'
 
 export const ParticipantsChart = () => {
-  const period = []
-  for (let i = 0; i <= 30; i++) {
-    period.push(`${i}`)
-  }
+  const [data, setData] = useState<IParticipantsData[]>([])
+  // const [period, setPeriod] = useState([])
 
-  const arr = []
-  for (let i = 0; i <= 30; i++) {
-    arr.push({ x: `${i}`, y: Math.floor(Math.random() * 1000) })
+  function getUsersPerDay(participants: IParticipantsData[], days?: 30 | 60) {
+    // TODO filter by hours
+    let startDate: Date
+    if (days) {
+      startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000)
+    }
+
+    const usersPerDay: IUsersPerPeriod = {}
+    let totalUsers: number = 0
+
+    participants.forEach((participant) => {
+      const registrationDate = new Date(participant.dateOfRegistration)
+
+      if (registrationDate >= startDate) {
+        totalUsers++
+        const formattedDate = registrationDate.toLocaleDateString()
+
+        if (!usersPerDay[formattedDate]) {
+          usersPerDay[formattedDate] = 1
+        } else {
+          usersPerDay[formattedDate]++
+        }
+      }
+    })
+
+    const usersPerDayArray: { x: string; y: number }[] = []
+
+    Object.entries(usersPerDay).forEach(([date, count]) => {
+      usersPerDayArray.push({ x: date.toString(), y: count })
+    })
+
+    return { usersPerDay: usersPerDayArray, totalUsers }
   }
+  const { usersPerDay, totalUsers } = getUsersPerDay(data, 30)
+
+  useEffect(() => {
+    const loadData = generateFakeParticipants(10000)
+    setData(loadData)
+  }, [])
 
   return (
     <Card
-      title="100,000"
+      title={totalUsers.toString()}
       subtitle="Participants"
       gridColumns={1}
       gridRows={2}
@@ -31,10 +68,7 @@ export const ParticipantsChart = () => {
         width={500}
       >
         <VictoryBar
-          categories={{
-            x: period,
-          }}
-          data={arr}
+          data={usersPerDay}
           labels={({ datum }) => [`${datum.y} signups`, 'Month, day']}
           labelComponent={
             <VictoryTooltip
