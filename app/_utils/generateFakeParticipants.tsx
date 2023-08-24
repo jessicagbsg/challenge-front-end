@@ -38,7 +38,7 @@ export const generateFakeParticipants = (count: number) => {
       email: faker.internet.email(),
       phone: faker.phone.number(),
       country: faker.location.country(),
-      countryCode: faker.location.countryCode(),
+      countryCode: faker.location.countryCode(), // this will be different from country
       city: faker.location.city(),
       friendsInvited: faker.string.numeric({ length: { min: 2, max: 5 } }),
       socialMedia: getRandomSocialMedia(),

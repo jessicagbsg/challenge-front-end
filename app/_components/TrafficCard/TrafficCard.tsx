@@ -1,21 +1,14 @@
 'use client'
 
+import { useParticipantsData } from 'app/_hooks/useParticipantsData'
 import { Button } from '../Button'
 import { Card } from '../Card'
 import { CardFilter } from '../CardFilter'
 import { HorizontalChart } from '../HorizontalChart'
 
 export const TrafficCard = () => {
-  const arr = [
-    { x: 'Google', y: 70 },
-    { x: 'Facebook', y: 50 },
-    { x: 'Youtube', y: 30 },
-    { x: 'Twitter', y: 20 },
-    { x: 'LinkedIn', y: 10 },
-    { x: 'Other', y: 8 },
-  ]
-    .sort((a, b) => b.y - a.y)
-    .reverse()
+  const { trafficPerPeriod } = useParticipantsData()
+
   return (
     <Card
       titleSection="Traffic"
@@ -25,7 +18,7 @@ export const TrafficCard = () => {
       cardFilter={<CardFilter text1="Source" text2="City" />}
     >
       <div style={{ gridRow: 1 }}>
-        <HorizontalChart data={arr} />
+        <HorizontalChart data={trafficPerPeriod} />
       </div>
 
       <Button text="See traffic sources" />

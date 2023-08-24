@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 
 import { generateFakeParticipants } from 'app/_utils/generateFakeParticipants'
-import type { IParticipantsData } from 'app/_components/ParticipantsChart/types'
 import type {
   IPeriodFilterContext,
   IGlobalContextProviderProps,
@@ -16,6 +15,9 @@ import type {
   PeriodInHours,
   IUsersPerPeriod,
   IUsersLeaderboardData,
+  IParticipantsData,
+  ChartDataStructure,
+  IUsersPerPeriodWithFlagData,
 } from './types'
 
 export const GlobalContext = createContext({} as IPeriodFilterContext)
@@ -25,7 +27,7 @@ export const GlobalContextProvider: FunctionComponent<
 > = ({ children }) => {
   const [data, setData] = useState<IParticipantsData[]>([])
 
-  const getUsersPerDay = (days?: 30 | 60, hours?: 1 | 24) => {
+  const getUsersPerPeriod = (days?: 30 | 60, hours?: 1 | 24) => {
     if (
       (days !== undefined && hours !== undefined) ||
       (days === undefined && hours === undefined)
@@ -42,31 +44,36 @@ export const GlobalContextProvider: FunctionComponent<
       startDate = new Date(Date.now() - hours * 60 * 60 * 1000)
     }
 
-    const usersPerPeriod: IUsersPerPeriod = {}
-    const allUsersLeaderboard: IUsersLeaderboardData[] = []
     let totalUsers: number = 0
+
+    const participantsInPeriod: IParticipantsData[] = participants
+      .filter((participant) => {
+        const registrationDate = new Date(participant.dateOfRegistration)
+        return startDate && registrationDate >= startDate
+      })
+      .map((participant) => {
+        totalUsers++
+        return participant
+      })
+
+    return { participantsInPeriod, totalUsers }
+  }
+
+  const amountOfSignups = (participants: IParticipantsData[]) => {
+    const usersPerPeriod: IUsersPerPeriod = {}
 
     participants.forEach((participant) => {
       const registrationDate = new Date(participant.dateOfRegistration)
 
-      if (startDate && registrationDate >= startDate) {
-        allUsersLeaderboard.push({
-          email: participant.email,
-          friendsInvited: participant.friendsInvited,
-          country: participant.country,
-        })
+      const formattedDate = registrationDate.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+      })
 
-        totalUsers++
-        const formattedDate = registrationDate.toLocaleDateString('en-US', {
-          month: 'long',
-          day: 'numeric',
-        })
-
-        if (!usersPerPeriod[formattedDate]) {
-          usersPerPeriod[formattedDate] = 1
-        } else {
-          usersPerPeriod[formattedDate]++
-        }
+      if (!usersPerPeriod[formattedDate]) {
+        usersPerPeriod[formattedDate] = 1
+      } else {
+        usersPerPeriod[formattedDate]++
       }
     })
 
@@ -82,11 +89,116 @@ export const GlobalContextProvider: FunctionComponent<
       return dateA.getTime() - dateB.getTime()
     })
 
+    return usersPerPeriodArray
+  }
+
+  const usersLeaderboardPerPeriod = (participants: IParticipantsData[]) => {
+    const allUsersLeaderboard: IUsersLeaderboardData[] = []
+
+    participants.forEach((participant) => {
+      allUsersLeaderboard.push({
+        email: participant.email,
+        friendsInvited: participant.friendsInvited,
+        country: participant.country,
+      })
+    })
+
     const usersLeaderboard = allUsersLeaderboard
       .sort((a, b) => +b.friendsInvited - +a.friendsInvited)
-      .slice(0, 4)
+      .slice(0, 5)
 
-    return { usersPerPeriod: usersPerPeriodArray, totalUsers, usersLeaderboard }
+    return usersLeaderboard
+  }
+
+  const usersTrafficPerPeriod = (participants: IParticipantsData[]) => {
+    const socialMediaCounts: Record<string, number> = participants.reduce(
+      (counts, participant) => {
+        const socialMedia = participant.socialMedia
+
+        counts[socialMedia] = (counts[socialMedia] || 0) + 1
+
+        return counts
+      },
+      {} as Record<string, number>,
+    )
+
+    const usersTraffictPerPeriod = Object.entries(socialMediaCounts)
+      .map(([socialMedia, count]) => ({
+        x: socialMedia,
+        y: count,
+      }))
+      .sort((a, b) => a.y - b.y)
+
+    return usersTraffictPerPeriod
+  }
+
+  const usersLocationPerPeriod = (participants: IParticipantsData[]) => {
+    const countryCounts: Record<string, number> = participants.reduce(
+      (counts, participant) => {
+        const country = participant.country
+        counts[country] = (counts[country] || 0) + 1
+        return counts
+      },
+      {} as Record<string, number>,
+    )
+
+    const countryData = Object.entries(countryCounts)
+      .map(([country, count]) => ({
+        x: country,
+        y: count,
+        code:
+          participants.find((participant) => participant.country === country)
+            ?.countryCode || 'other', // this will be different from country so the flag will be different
+      }))
+      .sort((a, b) => a.y - b.y)
+
+    const locationPerPeriod = countryData.slice(0, 6)
+
+    // this works, but since the amount of countries is big, the 'Other' category will be too big
+    // const otherCountriesCount = countryData
+    //   .slice(5)
+    //   .reduce((sum, entry) => sum + entry.y, 0)
+
+    // const usersSingupPerPeriod = [
+    //   ...topCountries,
+    //   {
+    //     x: 'Other',
+    //     y: otherCountriesCount,
+    //     code: 'other',
+    //   },
+    // ]
+
+    return locationPerPeriod
+  }
+
+  const usersBehaviourPerPeriod = (participants: IParticipantsData[]) => {
+    const browserParticipants = participants.filter(
+      (participant) => participant.behaviour === 'Browser',
+    )
+
+    const countryCounts: Record<string, number> = browserParticipants.reduce(
+      (counts, participant) => {
+        const country = participant.country
+        counts[country] = (counts[country] || 0) + 1
+        return counts
+      },
+      {} as Record<string, number>,
+    )
+
+    const countryData = Object.entries(countryCounts)
+      .map(([country, count]) => ({
+        x: country,
+        y: count,
+        code:
+          browserParticipants.find(
+            (participant) => participant.country === country,
+          )?.countryCode || 'other',
+      }))
+      .sort((a, b) => a.y - b.y)
+
+    const behaviourPerPeriod = countryData.slice(0, 6)
+
+    return behaviourPerPeriod
   }
 
   const [periodInDays, setPeriodInDays] = useState<PeriodInDays>(30)
@@ -102,13 +214,23 @@ export const GlobalContextProvider: FunctionComponent<
     setPeriodInDays(undefined)
   }
 
-  const [usersPerPeriod, setUsersPerPeriod] = useState<
-    { x: string; y: number }[]
-  >([])
+  const [usersPerPeriod, setUsersPerPeriod] = useState<ChartDataStructure[]>([])
   const [totalUsers, setTotalUsers] = useState<number>(0)
 
   const [usersLeaderboard, setUsersLeaderboard] = useState<
     IUsersLeaderboardData[]
+  >([])
+
+  const [trafficPerPeriod, setTrafficPerPeriod] = useState<
+    ChartDataStructure[]
+  >([])
+
+  const [locationPerPeriod, setLocationPerPeriod] = useState<
+    IUsersPerPeriodWithFlagData[]
+  >([])
+
+  const [behaviourPerPeriod, setBehaviourPerPeriod] = useState<
+    IUsersPerPeriodWithFlagData[]
   >([])
 
   useEffect(() => {
@@ -118,19 +240,35 @@ export const GlobalContextProvider: FunctionComponent<
 
   useEffect(() => {
     if (periodInDays !== undefined) {
-      const { usersPerPeriod, totalUsers, usersLeaderboard } =
-        getUsersPerDay(periodInDays)
+      const { participantsInPeriod, totalUsers } =
+        getUsersPerPeriod(periodInDays)
+      const usersPerPeriod = amountOfSignups(participantsInPeriod)
+      const usersLeaderboard = usersLeaderboardPerPeriod(participantsInPeriod)
+      const trafficPerPeriod = usersTrafficPerPeriod(participantsInPeriod)
+      const locationPerPeriod = usersLocationPerPeriod(participantsInPeriod)
+      const behaviourPerPeriod = usersBehaviourPerPeriod(participantsInPeriod)
       setUsersPerPeriod(usersPerPeriod)
       setTotalUsers(totalUsers)
       setUsersLeaderboard(usersLeaderboard)
+      setTrafficPerPeriod(trafficPerPeriod)
+      setLocationPerPeriod(locationPerPeriod)
+      setBehaviourPerPeriod(behaviourPerPeriod)
     } else if (periodInHours !== undefined) {
-      const { usersPerPeriod, totalUsers, usersLeaderboard } = getUsersPerDay(
+      const { participantsInPeriod, totalUsers } = getUsersPerPeriod(
         undefined,
         periodInHours,
       )
+      const usersPerPeriod = amountOfSignups(participantsInPeriod)
+      const usersLeaderboard = usersLeaderboardPerPeriod(participantsInPeriod)
+      const trafficPerPeriod = usersTrafficPerPeriod(participantsInPeriod)
+      const locationPerPeriod = usersLocationPerPeriod(participantsInPeriod)
+      const behaviourPerPeriod = usersBehaviourPerPeriod(participantsInPeriod)
       setUsersPerPeriod(usersPerPeriod)
       setTotalUsers(totalUsers)
       setUsersLeaderboard(usersLeaderboard)
+      setTrafficPerPeriod(trafficPerPeriod)
+      setLocationPerPeriod(locationPerPeriod)
+      setBehaviourPerPeriod(behaviourPerPeriod)
     }
   }, [data, periodInDays, periodInHours])
 
@@ -144,6 +282,9 @@ export const GlobalContextProvider: FunctionComponent<
         handleDaysSelect,
         handleHoursSelect,
         usersLeaderboard,
+        trafficPerPeriod,
+        locationPerPeriod,
+        behaviourPerPeriod,
       }}
     >
       {children}

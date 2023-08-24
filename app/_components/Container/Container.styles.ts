@@ -8,8 +8,8 @@ export const StyledContainer = styled.main<IContainerProps>`
   gap: 2rem;
   grid-template-columns: repeat(${({ gridColumns }) => gridColumns}, 1fr);
   grid-template-rows: repeat(${({ gridRows }) => gridRows}, auto);
-  @media (min-width: 1700px) {
-    width: 45vw;
+  @media (min-width: 1800px) {
+    width: 50vw;
   }
   @media (max-width: 1000px) {
     width: 90vw;
