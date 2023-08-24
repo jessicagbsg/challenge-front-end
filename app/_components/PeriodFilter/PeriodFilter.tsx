@@ -1,37 +1,34 @@
 'use client'
 
-import { useState } from 'react'
-
+import { useParticipantsData } from 'app/_hooks/useParticipantsData'
 import { Button } from '../Button'
 import { StyledPeriodFilter } from './PeriodFilter.styles'
 
 export const PeriodFilter = () => {
-  const [pressedButton, setPressedButton] = useState('30d')
+  const { periodInDays, periodInHours, handleDaysSelect, handleHoursSelect } =
+    useParticipantsData()
 
-  const handleButtonClick = (text: string) => {
-    setPressedButton(text)
-  }
   return (
     <StyledPeriodFilter>
       <Button
         text="1h"
-        onPress={() => handleButtonClick('1h')}
-        isPressed={pressedButton === '1h'}
+        onPress={() => handleHoursSelect(1)}
+        isPressed={periodInHours === 1}
       />
       <Button
         text="24h"
-        onPress={() => handleButtonClick('24h')}
-        isPressed={pressedButton === '24h'}
+        onPress={() => handleHoursSelect(24)}
+        isPressed={periodInHours === 24}
       />
       <Button
         text="30d"
-        onPress={() => handleButtonClick('30d')}
-        isPressed={pressedButton === '30d'}
+        onPress={() => handleDaysSelect(30)}
+        isPressed={periodInDays === 30}
       />
       <Button
         text="60d"
-        onPress={() => handleButtonClick('60d')}
-        isPressed={pressedButton === '60d'}
+        onPress={() => handleDaysSelect(60)}
+        isPressed={periodInDays === 60}
       />
     </StyledPeriodFilter>
   )

@@ -11,7 +11,3 @@ export interface IParticipantsData {
   behaviour: string
   dateOfRegistration: Date
 }
-
-export interface IUsersPerPeriod {
-  [date: string]: number
-}

@@ -8,23 +8,30 @@ import {
   LeaderboardCard,
   InsightsCard,
 } from './_components'
+import { GlobalContextProvider } from './_context/globalContext'
 
 export default function Home() {
   return (
-    <Container title="Summer Referral Competition" gridColumns={2} gridRows={4}>
-      <PeriodFilter />
+    <GlobalContextProvider>
+      <Container
+        title="Summer Referral Competition"
+        gridColumns={2}
+        gridRows={4}
+      >
+        <PeriodFilter />
 
-      <ParticipantsChart />
+        <ParticipantsChart />
 
-      <InsightsCard />
+        <InsightsCard />
 
-      <LeaderboardCard />
+        <LeaderboardCard />
 
-      <TrafficCard />
+        <TrafficCard />
 
-      <SignupCard />
+        <SignupCard />
 
-      <BehaviourCard />
-    </Container>
+        <BehaviourCard />
+      </Container>
+    </GlobalContextProvider>
   )
 }

@@ -1,55 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { VictoryChart, VictoryBar, VictoryTooltip, VictoryAxis } from 'victory'
 
-import { generateFakeParticipants } from 'app/_utils/generateFakeParticipants'
 import { Card } from '../Card'
-import { IParticipantsData, IUsersPerPeriod } from './types'
+import { useParticipantsData } from 'app/_hooks/useParticipantsData'
 
 export const ParticipantsChart = () => {
-  const [data, setData] = useState<IParticipantsData[]>([])
-  // const [period, setPeriod] = useState([])
-
-  function getUsersPerDay(participants: IParticipantsData[], days?: 30 | 60) {
-    // TODO filter by hours
-    let startDate: Date
-    if (days) {
-      startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000)
-    }
-
-    const usersPerDay: IUsersPerPeriod = {}
-    let totalUsers: number = 0
-
-    participants.forEach((participant) => {
-      const registrationDate = new Date(participant.dateOfRegistration)
-
-      if (registrationDate >= startDate) {
-        totalUsers++
-        const formattedDate = registrationDate.toLocaleDateString()
-
-        if (!usersPerDay[formattedDate]) {
-          usersPerDay[formattedDate] = 1
-        } else {
-          usersPerDay[formattedDate]++
-        }
-      }
-    })
-
-    const usersPerDayArray: { x: string; y: number }[] = []
-
-    Object.entries(usersPerDay).forEach(([date, count]) => {
-      usersPerDayArray.push({ x: date.toString(), y: count })
-    })
-
-    return { usersPerDay: usersPerDayArray, totalUsers }
-  }
-  const { usersPerDay, totalUsers } = getUsersPerDay(data, 30)
-
-  useEffect(() => {
-    const loadData = generateFakeParticipants(10000)
-    setData(loadData)
-  }, [])
+  const { usersPerPeriod, totalUsers } = useParticipantsData()
 
   return (
     <Card
@@ -68,8 +25,8 @@ export const ParticipantsChart = () => {
         width={500}
       >
         <VictoryBar
-          data={usersPerDay}
-          labels={({ datum }) => [`${datum.y} signups`, 'Month, day']}
+          data={usersPerPeriod}
+          labels={({ datum }) => [`${datum.y} signups`, `${datum.x}`]}
           labelComponent={
             <VictoryTooltip
               cornerRadius={3}
@@ -87,10 +44,10 @@ export const ParticipantsChart = () => {
           style={{
             data: {
               fill: '#fed500',
-              width: 8,
+              width: 6,
             },
           }}
-          cornerRadius={{ top: 4, bottom: 4 }}
+          cornerRadius={{ top: 3, bottom: 3 }}
         />
         <VictoryAxis
           dependentAxis

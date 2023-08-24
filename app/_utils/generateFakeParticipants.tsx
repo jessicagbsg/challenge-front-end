@@ -40,7 +40,7 @@ export const generateFakeParticipants = (count: number) => {
       country: faker.location.country(),
       countryCode: faker.location.countryCode(),
       city: faker.location.city(),
-      friendsInvited: faker.string.numeric({ length: { min: 2, max: 6 } }),
+      friendsInvited: faker.string.numeric({ length: { min: 2, max: 5 } }),
       socialMedia: getRandomSocialMedia(),
       behaviour: getRandomBehaviour(),
       dateOfRegistration: faker.date.recent({
