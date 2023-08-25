@@ -207,6 +207,19 @@ export const GlobalContextProvider: FunctionComponent<
 
     const locationPerPeriod = locationData.slice(0, 6)
 
+    // this works, but since the amount of countries is big, the 'Other' category will be too big
+    // const otherCountriesCount = countryData
+    //   .slice(5)
+    //   .reduce((sum, entry) => sum + entry.y, 0)
+
+    // const usersSingupPerPeriod = [
+    //   ...topCountries,
+    //   {
+    //     x: 'Other',
+    //     y: otherCountriesCount,
+    //     code: 'other',
+    //   },
+    // ]
     return locationPerPeriod
   }
 

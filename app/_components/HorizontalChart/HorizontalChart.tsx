@@ -21,7 +21,7 @@ export const HorizontalChart = ({ data }: IHorizontalChartProps) => {
 
   return (
     <VictoryChart
-      domainPadding={{ x: 0 }}
+      domainPadding={{ x: 0, y: 0 }}
       padding={{ top: 10, bottom: 10, right: 100, left: 0 }}
       height={120}
       width={200}
