@@ -68,10 +68,21 @@ export const GlobalContextProvider: FunctionComponent<
     participants.forEach((participant) => {
       const registrationDate = new Date(participant.dateOfRegistration)
 
-      const formattedDate = registrationDate.toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-      })
+      const formattedDate: string = periodInDays
+        ? registrationDate.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+          })
+        : periodInHours === 24
+        ? registrationDate.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            hourCycle: 'h24',
+          })
+        : registrationDate.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            hourCycle: 'h24',
+            minute: 'numeric',
+          })
 
       if (!usersPerPeriod[formattedDate]) {
         usersPerPeriod[formattedDate] = 1
@@ -87,9 +98,10 @@ export const GlobalContextProvider: FunctionComponent<
     })
 
     usersPerPeriodArray.sort((a, b) => {
-      const dateA = new Date(a.x)
-      const dateB = new Date(b.x)
-      return dateA.getTime() - dateB.getTime()
+      const timeA = new Date(a.x).getTime()
+      const timeB = new Date(b.x).getTime()
+
+      return timeA - timeB
     })
 
     return usersPerPeriodArray
@@ -203,9 +215,9 @@ export const GlobalContextProvider: FunctionComponent<
             (participant) => participant[locationKey] === location,
           )?.countryCode || 'other',
       }))
-      .sort((a, b) => a.y - b.y)
+      .sort((a, b) => b.y - a.y)
 
-    const locationPerPeriod = locationData.slice(0, 6)
+    const locationPerPeriod = locationData.slice(0, 6).sort((a, b) => a.y - b.y)
 
     // this works, but since the amount of countries is big, the 'Other' category will be too big
     // const otherCountriesCount = countryData
@@ -249,9 +261,9 @@ export const GlobalContextProvider: FunctionComponent<
             (participant) => participant.country === country,
           )?.countryCode || 'other',
       }))
-      .sort((a, b) => a.y - b.y)
+      .sort((a, b) => b.y - a.y)
 
-    const behaviourPerPeriod = countryData.slice(0, 6)
+    const behaviourPerPeriod = countryData.slice(0, 6).sort((a, b) => a.y - b.y)
 
     return behaviourPerPeriod
   }
