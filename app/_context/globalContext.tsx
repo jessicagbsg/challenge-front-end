@@ -22,14 +22,13 @@ import type {
   Behaviour,
   Traffic,
 } from './types'
+import { Loader } from 'app/_components/Loader'
 
 export const GlobalContext = createContext({} as IPeriodFilterContext)
 
 export const GlobalContextProvider: FunctionComponent<
   IGlobalContextProviderProps
 > = ({ children }) => {
-  const [data, setData] = useState<IParticipantsData[]>([])
-
   const getUsersPerPeriod = (days?: 30 | 60, hours?: 1 | 24) => {
     if (
       (days !== undefined && hours !== undefined) ||
@@ -120,7 +119,7 @@ export const GlobalContextProvider: FunctionComponent<
 
     const usersLeaderboard = allUsersLeaderboard
       .sort((a, b) => +b.friendsInvited - +a.friendsInvited)
-      .slice(0, 5)
+      .slice(0, 4)
 
     return usersLeaderboard
   }
@@ -296,6 +295,9 @@ export const GlobalContextProvider: FunctionComponent<
     setTraffic(traffic)
   }
 
+  const [data, setData] = useState<IParticipantsData[]>([])
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [usersPerPeriod, setUsersPerPeriod] = useState<ChartDataStructure[]>([])
   const [totalUsers, setTotalUsers] = useState<number>(0)
 
@@ -316,61 +318,50 @@ export const GlobalContextProvider: FunctionComponent<
   >([])
 
   useEffect(() => {
-    const loadData = generateFakeParticipants(10000)
+    const loadData = generateFakeParticipants(100000)
     setData(loadData)
+    setIsLoadingPage(false)
   }, [])
 
   useEffect(() => {
     if (periodInDays !== undefined) {
-      const { participantsInPeriod, totalUsers } =
-        getUsersPerPeriod(periodInDays)
-      const usersPerPeriod = amountOfSignups(participantsInPeriod)
-      const usersLeaderboard = usersLeaderboardPerPeriod(participantsInPeriod)
-      const trafficPerPeriod = usersTrafficPerPeriod(
-        participantsInPeriod,
-        traffic,
-      )
-      const locationPerPeriod = usersLocationPerPeriod(
-        participantsInPeriod,
-        region,
-      )
-      const behaviourPerPeriod = usersBehaviourPerPeriod(
-        participantsInPeriod,
-        behaviour,
-      )
-      setUsersPerPeriod(usersPerPeriod)
-      setTotalUsers(totalUsers)
-      setUsersLeaderboard(usersLeaderboard)
-      setTrafficPerPeriod(trafficPerPeriod)
-      setLocationPerPeriod(locationPerPeriod)
-      setBehaviourPerPeriod(behaviourPerPeriod)
+      handleUsersPeriod(periodInDays)
     } else if (periodInHours !== undefined) {
-      const { participantsInPeriod, totalUsers } = getUsersPerPeriod(
-        undefined,
-        periodInHours,
-      )
-      const usersPerPeriod = amountOfSignups(participantsInPeriod)
-      const usersLeaderboard = usersLeaderboardPerPeriod(participantsInPeriod)
-      const trafficPerPeriod = usersTrafficPerPeriod(
-        participantsInPeriod,
-        traffic,
-      )
-      const locationPerPeriod = usersLocationPerPeriod(
-        participantsInPeriod,
-        region,
-      )
-      const behaviourPerPeriod = usersBehaviourPerPeriod(
-        participantsInPeriod,
-        behaviour,
-      )
-      setUsersPerPeriod(usersPerPeriod)
-      setTotalUsers(totalUsers)
-      setUsersLeaderboard(usersLeaderboard)
-      setTrafficPerPeriod(trafficPerPeriod)
-      setLocationPerPeriod(locationPerPeriod)
-      setBehaviourPerPeriod(behaviourPerPeriod)
+      handleUsersPeriod(undefined, periodInHours)
     }
   }, [data, periodInDays, periodInHours, region, behaviour, traffic])
+
+  const handleUsersPeriod = (days?: 30 | 60, hours?: 1 | 24) => {
+    if (data.length > 0) {
+      const { participantsInPeriod, totalUsers } = getUsersPerPeriod(
+        days,
+        hours,
+      )
+
+      const usersPerPeriod = amountOfSignups(participantsInPeriod)
+      const usersLeaderboard = usersLeaderboardPerPeriod(participantsInPeriod)
+      const trafficPerPeriod = usersTrafficPerPeriod(
+        participantsInPeriod,
+        traffic,
+      )
+      const locationPerPeriod = usersLocationPerPeriod(
+        participantsInPeriod,
+        region,
+      )
+      const behaviourPerPeriod = usersBehaviourPerPeriod(
+        participantsInPeriod,
+        behaviour,
+      )
+
+      setUsersPerPeriod(usersPerPeriod)
+      setTotalUsers(totalUsers)
+      setUsersLeaderboard(usersLeaderboard)
+      setTrafficPerPeriod(trafficPerPeriod)
+      setLocationPerPeriod(locationPerPeriod)
+      setBehaviourPerPeriod(behaviourPerPeriod)
+      setIsLoading(false)
+    }
+  }
 
   return (
     <GlobalContext.Provider
@@ -388,9 +379,25 @@ export const GlobalContextProvider: FunctionComponent<
         trafficPerPeriod,
         locationPerPeriod,
         behaviourPerPeriod,
+        isLoading,
+        setIsLoading,
       }}
     >
-      {children}
+      {isLoadingPage ? (
+        <div
+          style={{
+            height: '100vh',
+            width: '100vw',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Loader />
+        </div>
+      ) : (
+        children
+      )}
     </GlobalContext.Provider>
   )
 }

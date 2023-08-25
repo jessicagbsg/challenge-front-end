@@ -8,9 +8,10 @@ import {
   StyledText,
   StyledTitleSection,
 } from './LeaderboardCard.style'
+import { Loader } from '../Loader'
 
 export const LeaderboardCard = () => {
-  const { usersLeaderboard } = useParticipantsData()
+  const { usersLeaderboard, isLoading } = useParticipantsData()
 
   return (
     <StyledLeaderboardContainer>
@@ -19,13 +20,19 @@ export const LeaderboardCard = () => {
         <StyledText>Email</StyledText>
         <StyledText>Friends Invited</StyledText>
         <StyledText>Country</StyledText>
-        {usersLeaderboard.map((user) => (
-          <>
-            <StyledText>{user.email}</StyledText>
-            <StyledText>{user.friendsInvited}</StyledText>
-            <StyledText>{user.country}</StyledText>
-          </>
-        ))}
+        {isLoading ? (
+          <div style={{ gridColumn: 'span 3', gridRow: '2/-1' }}>
+            <Loader />
+          </div>
+        ) : (
+          usersLeaderboard.map((user) => (
+            <>
+              <StyledText>{user.email}</StyledText>
+              <StyledText>{user.friendsInvited}</StyledText>
+              <StyledText>{user.country}</StyledText>
+            </>
+          ))
+        )}
       </StyledLeaderboardGrid>
       <Button text="See leaderboard" />
     </StyledLeaderboardContainer>

@@ -52,6 +52,8 @@ export interface IPeriodFilterContext {
   trafficPerPeriod: IUsersPerPeriodData[]
   locationPerPeriod: IUsersSignupsPerPeriodData[]
   behaviourPerPeriod: IUsersSignupsPerPeriodData[]
+  isLoading: boolean
+  setIsLoading: (isLoading: boolean) => void
 }
 
 export interface IGlobalContextProviderProps {

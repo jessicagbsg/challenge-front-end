@@ -5,9 +5,10 @@ import { Button } from '../Button'
 import { Card } from '../Card'
 import { CardFilter } from '../CardFilter'
 import { HorizontalChart } from '../HorizontalChart'
+import { Loader } from '../Loader'
 
 export const TrafficCard = () => {
-  const { trafficPerPeriod } = useParticipantsData()
+  const { trafficPerPeriod, isLoading } = useParticipantsData()
 
   return (
     <Card
@@ -18,7 +19,7 @@ export const TrafficCard = () => {
       cardFilter={<CardFilter type="traffic" text1="Source" text2="City" />}
     >
       <div style={{ gridRow: 1 }}>
-        <HorizontalChart data={trafficPerPeriod} />
+        {isLoading ? <Loader /> : <HorizontalChart data={trafficPerPeriod} />}
       </div>
 
       <Button text="See traffic sources" />

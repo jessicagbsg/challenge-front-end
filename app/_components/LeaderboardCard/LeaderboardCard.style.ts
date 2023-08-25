@@ -29,11 +29,17 @@ export const StyledTitleSection = styled.h4`
 `
 
 export const StyledText = styled.p`
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 400;
   margin-top: 0.7rem;
-  @media (min-width: 1700px) {
+  @media (min-width: 1500px) {
     font-size: 1rem;
+  }
+  @media (max-width: 1200px) {
+    font-size: 0.65rem;
+  }
+  @media (max-width: 800px) {
+    font-size: 0.75rem;
   }
   @media (max-width: 500px) {
     font-size: 0.7rem;

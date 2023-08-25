@@ -5,9 +5,10 @@ import { Button } from '../Button'
 import { Card } from '../Card'
 import { CardFilter } from '../CardFilter'
 import { HorizontalChart } from '../HorizontalChart'
+import { Loader } from '../Loader'
 
 export const SignupCard = () => {
-  const { locationPerPeriod } = useParticipantsData()
+  const { locationPerPeriod, isLoading } = useParticipantsData()
 
   return (
     <Card
@@ -18,7 +19,7 @@ export const SignupCard = () => {
       cardFilter={<CardFilter type="location" text1="Country" text2="City" />}
     >
       <div style={{ gridRow: 1 }}>
-        <HorizontalChart data={locationPerPeriod} />
+        {isLoading ? <Loader /> : <HorizontalChart data={locationPerPeriod} />}
       </div>
       <Button text="See all countries" />
     </Card>
