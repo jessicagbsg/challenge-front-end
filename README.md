@@ -13,16 +13,15 @@ This project was developed for a front-end challenge. The main goal of this proj
 # Tools Used
 
 ### Front-End
-* ``ReactJs``
-* ``NextJs``
+* ``NextJs 13 App Rounter``
+* ``ReactJs (hooks, contextApi)``
 * ``TypeScript`` 
 * ``Styled Components``
 
 ### Libs and tools
-* ``Victory Charts`` 
-* ``React Spinners``
-* ``Husky``
-* ``FakerJs``
+* ``Victory``- As chart library
+* ``Husky`` - Git hook for pre commit
+* ``FakerJs``- To generate massive data
 
 # Instructions
 
