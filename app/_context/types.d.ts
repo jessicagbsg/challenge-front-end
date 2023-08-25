@@ -1,5 +1,8 @@
 export type PeriodInDays = 30 | 60 | undefined
 export type PeriodInHours = 1 | 24 | undefined
+export type Region = 'country' | 'city'
+export type Behaviour = 'browsers' | 'devices'
+export type Traffic = 'source' | 'city'
 export type ChartDataStructure = { x: string; y: number }
 
 export interface IParticipantsData {
@@ -42,6 +45,9 @@ export interface IPeriodFilterContext {
   periodInHours: PeriodInHours
   handleDaysSelect: (days: PeriodInDays) => void
   handleHoursSelect: (hours: PeriodInHours) => void
+  handleRegionSelect: (region: Region) => void
+  handleBehaviourSelect: (behaviour: Behaviour) => void
+  handleTrafficSelect: (traffic: Traffic) => void
   usersLeaderboard: IUsersLeaderboardData[]
   trafficPerPeriod: IUsersPerPeriodData[]
   locationPerPeriod: IUsersSignupsPerPeriodData[]

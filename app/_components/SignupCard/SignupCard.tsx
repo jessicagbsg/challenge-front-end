@@ -15,7 +15,7 @@ export const SignupCard = () => {
       gridColumns={2}
       gridRows={2}
       contentColumnSpan={2}
-      cardFilter={<CardFilter text1="Country" text2="City" />}
+      cardFilter={<CardFilter type="location" text1="Country" text2="City" />}
     >
       <div style={{ gridRow: 1 }}>
         <HorizontalChart data={locationPerPeriod} />

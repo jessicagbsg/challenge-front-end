@@ -21,10 +21,10 @@ function getRandomSocialMedia(): SocialMedia {
   return socialMediaOptions[randomIndex]
 }
 
-type Behaviour = 'Browser' | 'Device'
+type Behaviour = 'browsers' | 'devices'
 
 function getRandomBehaviour(): Behaviour {
-  const behaviourOptions: Behaviour[] = ['Browser', 'Device']
+  const behaviourOptions: Behaviour[] = ['browsers', 'devices']
   const randomIndex = Math.floor(Math.random() * behaviourOptions.length)
   return behaviourOptions[randomIndex]
 }

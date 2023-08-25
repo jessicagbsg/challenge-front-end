@@ -14,7 +14,9 @@ export const BehaviourCard = () => {
       gridColumns={2}
       gridRows={2}
       contentColumnSpan={2}
-      cardFilter={<CardFilter text1="Browsers" text2="Devices" />}
+      cardFilter={
+        <CardFilter type="behaviour" text1="Browsers" text2="Devices" />
+      }
     >
       <div style={{ gridRow: 1 }}>
         <HorizontalChart data={behaviourPerPeriod} />

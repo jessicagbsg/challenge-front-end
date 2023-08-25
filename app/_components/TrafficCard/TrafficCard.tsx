@@ -15,7 +15,7 @@ export const TrafficCard = () => {
       gridColumns={2}
       gridRows={2}
       contentColumnSpan={2}
-      cardFilter={<CardFilter text1="Source" text2="City" />}
+      cardFilter={<CardFilter type="traffic" text1="Source" text2="City" />}
     >
       <div style={{ gridRow: 1 }}>
         <HorizontalChart data={trafficPerPeriod} />

@@ -18,6 +18,9 @@ import type {
   IParticipantsData,
   ChartDataStructure,
   IUsersPerPeriodWithFlagData,
+  Region,
+  Behaviour,
+  Traffic,
 } from './types'
 
 export const GlobalContext = createContext({} as IPeriodFilterContext)
@@ -110,70 +113,109 @@ export const GlobalContextProvider: FunctionComponent<
     return usersLeaderboard
   }
 
-  const usersTrafficPerPeriod = (participants: IParticipantsData[]) => {
-    const socialMediaCounts: Record<string, number> = participants.reduce(
-      (counts, participant) => {
-        const socialMedia = participant.socialMedia
+  const usersTrafficPerPeriod = (
+    participants: IParticipantsData[],
+    traffic: Traffic,
+    topCities: number = 6,
+  ) => {
+    if (traffic === 'city') {
+      const cityCounts: Record<string, number> = participants.reduce(
+        (counts, participant) => {
+          const city = participant.city
+          counts[city] = (counts[city] || 0) + 1
+          return counts
+        },
+        {} as Record<string, number>,
+      )
 
-        counts[socialMedia] = (counts[socialMedia] || 0) + 1
+      const sortedCities = Object.keys(cityCounts).sort(
+        (a, b) => cityCounts[b] - cityCounts[a],
+      )
 
-        return counts
-      },
-      {} as Record<string, number>,
-    )
-
-    const usersTraffictPerPeriod = Object.entries(socialMediaCounts)
-      .map(([socialMedia, count]) => ({
-        x: socialMedia,
-        y: count,
+      const topCitiesData = sortedCities.slice(0, topCities).map((city) => ({
+        city,
+        count: cityCounts[city],
       }))
-      .sort((a, b) => a.y - b.y)
 
-    return usersTraffictPerPeriod
+      const socialMediaCounts: Record<string, number> = participants.reduce(
+        (counts, participant) => {
+          if (
+            topCitiesData.some((cityData) => cityData.city === participant.city)
+          ) {
+            const socialMedia = participant.socialMedia
+            counts[socialMedia] = (counts[socialMedia] || 0) + 1
+          }
+          return counts
+        },
+        {} as Record<string, number>,
+      )
+
+      const usersTrafficPerPeriod = Object.entries(socialMediaCounts)
+        .map(([socialMedia, count]) => ({
+          x: socialMedia,
+          y: count,
+        }))
+        .sort((a, b) => a.y - b.y)
+
+      return usersTrafficPerPeriod
+    } else {
+      const socialMediaCounts: Record<string, number> = participants.reduce(
+        (counts, participant) => {
+          const socialMedia = participant.socialMedia
+          counts[socialMedia] = (counts[socialMedia] || 0) + 1
+          return counts
+        },
+        {} as Record<string, number>,
+      )
+
+      const usersTrafficPerPeriod = Object.entries(socialMediaCounts)
+        .map(([socialMedia, count]) => ({
+          x: socialMedia,
+          y: count,
+        }))
+        .sort((a, b) => a.y - b.y)
+
+      return usersTrafficPerPeriod
+    }
   }
 
-  const usersLocationPerPeriod = (participants: IParticipantsData[]) => {
-    const countryCounts: Record<string, number> = participants.reduce(
+  const usersLocationPerPeriod = (
+    participants: IParticipantsData[],
+    filterType: Region,
+  ) => {
+    const locationKey = filterType === 'country' ? 'country' : 'city'
+
+    const locationCounts: Record<string, number> = participants.reduce(
       (counts, participant) => {
-        const country = participant.country
-        counts[country] = (counts[country] || 0) + 1
+        const location = participant[locationKey]
+        counts[location] = (counts[location] || 0) + 1
         return counts
       },
       {} as Record<string, number>,
     )
 
-    const countryData = Object.entries(countryCounts)
-      .map(([country, count]) => ({
-        x: country,
+    const locationData = Object.entries(locationCounts)
+      .map(([location, count]) => ({
+        x: location,
         y: count,
         code:
-          participants.find((participant) => participant.country === country)
-            ?.countryCode || 'other', // this will be different from country so the flag will be different
+          participants.find(
+            (participant) => participant[locationKey] === location,
+          )?.countryCode || 'other',
       }))
       .sort((a, b) => a.y - b.y)
 
-    const locationPerPeriod = countryData.slice(0, 6)
-
-    // this works, but since the amount of countries is big, the 'Other' category will be too big
-    // const otherCountriesCount = countryData
-    //   .slice(5)
-    //   .reduce((sum, entry) => sum + entry.y, 0)
-
-    // const usersSingupPerPeriod = [
-    //   ...topCountries,
-    //   {
-    //     x: 'Other',
-    //     y: otherCountriesCount,
-    //     code: 'other',
-    //   },
-    // ]
+    const locationPerPeriod = locationData.slice(0, 6)
 
     return locationPerPeriod
   }
 
-  const usersBehaviourPerPeriod = (participants: IParticipantsData[]) => {
+  const usersBehaviourPerPeriod = (
+    participants: IParticipantsData[],
+    behaviour: Behaviour,
+  ) => {
     const browserParticipants = participants.filter(
-      (participant) => participant.behaviour === 'Browser',
+      (participant) => participant.behaviour === behaviour,
     )
 
     const countryCounts: Record<string, number> = browserParticipants.reduce(
@@ -203,6 +245,9 @@ export const GlobalContextProvider: FunctionComponent<
 
   const [periodInDays, setPeriodInDays] = useState<PeriodInDays>(30)
   const [periodInHours, setPeriodInHours] = useState<PeriodInHours>(undefined)
+  const [region, setRegion] = useState<Region>('country')
+  const [behaviour, setBehaviour] = useState<Behaviour>('browsers')
+  const [traffic, setTraffic] = useState<Traffic>('source')
 
   const handleDaysSelect = (days: PeriodInDays) => {
     setPeriodInDays(days)
@@ -212,6 +257,18 @@ export const GlobalContextProvider: FunctionComponent<
   const handleHoursSelect = (hours: PeriodInHours) => {
     setPeriodInHours(hours)
     setPeriodInDays(undefined)
+  }
+
+  const handleRegionSelect = (region: Region) => {
+    setRegion(region)
+  }
+
+  const handleBehaviourSelect = (behaviour: Behaviour) => {
+    setBehaviour(behaviour)
+  }
+
+  const handleTrafficSelect = (traffic: Traffic) => {
+    setTraffic(traffic)
   }
 
   const [usersPerPeriod, setUsersPerPeriod] = useState<ChartDataStructure[]>([])
@@ -244,9 +301,18 @@ export const GlobalContextProvider: FunctionComponent<
         getUsersPerPeriod(periodInDays)
       const usersPerPeriod = amountOfSignups(participantsInPeriod)
       const usersLeaderboard = usersLeaderboardPerPeriod(participantsInPeriod)
-      const trafficPerPeriod = usersTrafficPerPeriod(participantsInPeriod)
-      const locationPerPeriod = usersLocationPerPeriod(participantsInPeriod)
-      const behaviourPerPeriod = usersBehaviourPerPeriod(participantsInPeriod)
+      const trafficPerPeriod = usersTrafficPerPeriod(
+        participantsInPeriod,
+        traffic,
+      )
+      const locationPerPeriod = usersLocationPerPeriod(
+        participantsInPeriod,
+        region,
+      )
+      const behaviourPerPeriod = usersBehaviourPerPeriod(
+        participantsInPeriod,
+        behaviour,
+      )
       setUsersPerPeriod(usersPerPeriod)
       setTotalUsers(totalUsers)
       setUsersLeaderboard(usersLeaderboard)
@@ -260,9 +326,18 @@ export const GlobalContextProvider: FunctionComponent<
       )
       const usersPerPeriod = amountOfSignups(participantsInPeriod)
       const usersLeaderboard = usersLeaderboardPerPeriod(participantsInPeriod)
-      const trafficPerPeriod = usersTrafficPerPeriod(participantsInPeriod)
-      const locationPerPeriod = usersLocationPerPeriod(participantsInPeriod)
-      const behaviourPerPeriod = usersBehaviourPerPeriod(participantsInPeriod)
+      const trafficPerPeriod = usersTrafficPerPeriod(
+        participantsInPeriod,
+        traffic,
+      )
+      const locationPerPeriod = usersLocationPerPeriod(
+        participantsInPeriod,
+        region,
+      )
+      const behaviourPerPeriod = usersBehaviourPerPeriod(
+        participantsInPeriod,
+        behaviour,
+      )
       setUsersPerPeriod(usersPerPeriod)
       setTotalUsers(totalUsers)
       setUsersLeaderboard(usersLeaderboard)
@@ -270,7 +345,7 @@ export const GlobalContextProvider: FunctionComponent<
       setLocationPerPeriod(locationPerPeriod)
       setBehaviourPerPeriod(behaviourPerPeriod)
     }
-  }, [data, periodInDays, periodInHours])
+  }, [data, periodInDays, periodInHours, region, behaviour, traffic])
 
   return (
     <GlobalContext.Provider
@@ -281,6 +356,9 @@ export const GlobalContextProvider: FunctionComponent<
         periodInHours,
         handleDaysSelect,
         handleHoursSelect,
+        handleRegionSelect,
+        handleBehaviourSelect,
+        handleTrafficSelect,
         usersLeaderboard,
         trafficPerPeriod,
         locationPerPeriod,
