@@ -318,7 +318,7 @@ export const GlobalContextProvider: FunctionComponent<
   >([])
 
   useEffect(() => {
-    const loadData = generateFakeParticipants(100000)
+    const loadData = generateFakeParticipants(10000)
     setData(loadData)
     setIsLoadingPage(false)
   }, [])
