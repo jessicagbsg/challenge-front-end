@@ -1,6 +1,6 @@
-# ZooTools Insights
+# Paerticipants Insights
  
-## ZooTools - front-end challenge
+## Participants Insights
 
 This project was developed for a front-end challenge. The main goal of this project is to render dinamic charts and filter them.
 
