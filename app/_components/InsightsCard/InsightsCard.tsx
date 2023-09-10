@@ -13,7 +13,7 @@ import Image from 'next/image'
 export const InsightsCard = () => {
   return (
     <Card
-      title="ZooTools insights"
+      title="Participants Insights"
       subtitle="Making analytics simple and actionable"
       columnSpan={2}
       gridColumns={1}
