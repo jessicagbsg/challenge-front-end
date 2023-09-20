@@ -7,7 +7,7 @@ This project was developed to put to practice my knowledge in React.js/Next.js w
 
 ## Layout
 
-go to insights-six-kappa.vercel.app to see the layout 
+go to [insights](https://insights-six-kappa.vercel.app/) to see the layout 
 
 # Tools Used
 
