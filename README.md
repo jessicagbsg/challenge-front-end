@@ -2,13 +2,12 @@
  
 ## Participants Insights
 
-This project was developed for a front-end challenge. The main goal of this project is to render dinamic charts and filter them.
+This project was developed to put to practice my knowledge in React.js/Next.js with dynamic charts and filters.
 
 
 ## Layout
 
-![ezgif com-video-to-gif](https://github.com/jessicagbsg/challenge-front-end/assets/98706386/b8b61bb2-f5da-4920-9279-7a29506a2acb)
-
+go to insights-six-kappa.vercel.app to see the layout 
 
 # Tools Used
 
